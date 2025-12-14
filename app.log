@@ -1,0 +1,107 @@
+[2025-12-13 13:06:38] [INFO] Iniciando servidor socket na porta 8080
+[2025-12-13 13:08:52] [INFO] Cliente conectado: /0:0:0:0:0:0:0:1
+[2025-12-13 13:08:52] [INFO] Cliente conectado: /0:0:0:0:0:0:0:1
+[2025-12-13 13:08:52] [INFO] Recebido: POST / HTTP/1.1
+[2025-12-13 13:08:52] [INFO] Recebido: User-Agent: PostmanRuntime/7.49.0
+[2025-12-13 13:08:52] [INFO] Recebido: Accept: */*
+[2025-12-13 13:08:52] [INFO] Recebido: Postman-Token: 7a6e81f9-971e-4363-bdca-2c5120eefb60
+[2025-12-13 13:08:52] [INFO] Recebido: Host: localhost:8080
+[2025-12-13 13:08:52] [INFO] Recebido: Accept-Encoding: gzip, deflate, br
+[2025-12-13 13:08:52] [INFO] Recebido: Connection: keep-alive
+[2025-12-13 13:08:52] [INFO] Recebido: Content-Length: 0
+[2025-12-13 13:08:52] [INFO] Recebido: 
+[2025-12-13 13:08:52] [ERROR] Erro ao tratar cliente: Uma conexão estabelecida foi anulada pelo software no computador host
+[2025-12-13 16:00:05] [INFO] Iniciando servidor socket na porta 8080
+[2025-12-13 16:07:12] [INFO] Iniciando servidor socket na porta 8080
+[2025-12-13 16:07:24] [ERROR] Index 1 out of bounds for length 1
+[2025-12-13 16:08:01] [INFO] Iniciando servidor socket na porta 8080
+[2025-12-13 16:14:52] [INFO] Heartbeat iniciado para hosts: [127.0.0.1:8081, 127.0.0.1:8082]
+[2025-12-13 16:14:52] [INFO] Iniciando servidor socket na porta 8080
+[2025-12-13 16:14:52] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
+[2025-12-13 16:14:52] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:14:57] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
+[2025-12-13 16:14:57] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:02] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
+[2025-12-13 16:15:02] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:07] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
+[2025-12-13 16:15:07] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:12] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
+[2025-12-13 16:15:12] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:17] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
+[2025-12-13 16:15:17] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:22] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
+[2025-12-13 16:15:22] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:27] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
+[2025-12-13 16:15:27] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:28] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:28] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:28] [INFO] Heartbeat iniciado para hosts: [127.0.0.1:8080, 127.0.0.1:8082]
+[2025-12-13 16:15:28] [INFO] Iniciando servidor socket na porta 8081
+[2025-12-13 16:15:28] [INFO] Heartbeat enviado para 127.0.0.1:8080
+[2025-12-13 16:15:28] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:32] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:32] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:32] [INFO] Heartbeat enviado para 127.0.0.1:8081
+[2025-12-13 16:15:32] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:33] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:33] [INFO] Heartbeat enviado para 127.0.0.1:8080
+[2025-12-13 16:15:33] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:33] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:37] [INFO] Heartbeat enviado para 127.0.0.1:8081
+[2025-12-13 16:15:37] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:37] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:37] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:38] [INFO] Heartbeat enviado para 127.0.0.1:8080
+[2025-12-13 16:15:38] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:38] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:38] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:42] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:42] [INFO] Heartbeat enviado para 127.0.0.1:8081
+[2025-12-13 16:15:42] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:42] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:43] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:43] [INFO] Heartbeat enviado para 127.0.0.1:8080
+[2025-12-13 16:15:43] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:43] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:47] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:47] [INFO] Heartbeat enviado para 127.0.0.1:8081
+[2025-12-13 16:15:47] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:47] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:48] [INFO] Heartbeat enviado para 127.0.0.1:8080
+[2025-12-13 16:15:48] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:48] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:48] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:52] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:52] [INFO] Heartbeat enviado para 127.0.0.1:8081
+[2025-12-13 16:15:52] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:52] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:53] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:53] [INFO] Heartbeat enviado para 127.0.0.1:8080
+[2025-12-13 16:15:53] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:53] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:57] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:57] [INFO] Heartbeat enviado para 127.0.0.1:8081
+[2025-12-13 16:15:57] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:57] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:15:58] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:15:58] [INFO] Heartbeat enviado para 127.0.0.1:8080
+[2025-12-13 16:15:58] [INFO] Recebido: HBEAT
+[2025-12-13 16:15:58] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:16:02] [INFO] Heartbeat enviado para 127.0.0.1:8081
+[2025-12-13 16:16:02] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:16:02] [INFO] Recebido: HBEAT
+[2025-12-13 16:16:02] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:16:03] [INFO] Heartbeat enviado para 127.0.0.1:8080
+[2025-12-13 16:16:03] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:16:03] [INFO] Recebido: HBEAT
+[2025-12-13 16:16:03] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:16:07] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:16:07] [INFO] Heartbeat enviado para 127.0.0.1:8081
+[2025-12-13 16:16:07] [INFO] Recebido: HBEAT
+[2025-12-13 16:16:07] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:16:08] [INFO] Cliente conectado: /127.0.0.1
+[2025-12-13 16:16:08] [INFO] Heartbeat enviado para 127.0.0.1:8080
+[2025-12-13 16:16:08] [INFO] Recebido: HBEAT
+[2025-12-13 16:16:08] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-13 16:16:12] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
+[2025-12-13 16:16:12] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
