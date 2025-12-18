@@ -1,4 +1,10 @@
-com/thyagoronald/configs/DbConfig.class
-com/thyagoronald/models/UserModel.class
 com/thyagoronald/App.class
+com/thyagoronald/models/UserModel.class
+com/thyagoronald/services/HeartbeatService$HeartbeatServiceBuilder.class
+com/thyagoronald/dto/CreateUserDTO$CreateUserDTOBuilder.class
+com/thyagoronald/utils/Logger.class
 com/thyagoronald/services/UserService.class
+com/thyagoronald/configs/DbConfig.class
+com/thyagoronald/dto/CreateUserDTO.class
+com/thyagoronald/services/HeartbeatService.class
+com/thyagoronald/services/SocketService.class

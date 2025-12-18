@@ -105,3 +105,8 @@
 [2025-12-13 16:16:08] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
 [2025-12-13 16:16:12] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8081 - Connection refused: connect
 [2025-12-13 16:16:12] [ERROR] Falha ao enviar heartbeat para 127.0.0.1:8082 - Connection refused: connect
+[2025-12-18 15:48:19] [ERROR] Index 0 out of bounds for length 0
+[2025-12-18 15:48:31] [ERROR] Index 1 out of bounds for length 1
+[2025-12-18 15:51:02] [ERROR] Index 0 out of bounds for length 0
+[2025-12-18 15:51:09] [INFO] Iniciando servidor socket na porta 880
+[2025-12-18 15:51:09] [INFO] Heartbeat iniciado para hosts: [172.20.0.2, 172.20.0.3, 172.20.0.4]

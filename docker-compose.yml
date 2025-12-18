@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  server_01:
+    build: .
+    container_name: server_01
+    networks:
+      custom_net:
+        ipv4_address: 172.25.0.2
+  server_02:
+    build: .
+    container_name: server_02
+    networks:
+      custom_net:
+        ipv4_address: 172.25.0.3
+  server_03:
+    build: .
+    container_name: server_03
+    networks:
+      custom_net:
+        ipv4_address: 172.25.0.4
+
+networks:
+  custom_net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16

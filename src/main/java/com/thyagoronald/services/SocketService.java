@@ -41,6 +41,8 @@ public class SocketService {
 
                 } else if (inputLine.contains("REPLICATE")) {
 
+                } else if (inputLine.contains("QUERY")) {
+                    
                 }
             }
         } catch (IOException e) {
