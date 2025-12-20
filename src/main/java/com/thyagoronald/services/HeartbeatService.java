@@ -8,13 +8,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import com.thyagoronald.pojos.HostPojo;
 import com.thyagoronald.utils.Logger;
 
 import lombok.Builder;
 
 @Builder
 public class HeartbeatService {
-    private final List<String> hosts;
+    private final List<HostPojo> hosts;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private final int intervalSeconds;
 
@@ -29,17 +30,17 @@ public class HeartbeatService {
     }
 
     private void sendHeartbeats() {
-        for (String hostAux : hosts) {
-            String host = hostAux.split(":")[0];
-            int port = Integer.parseInt(hostAux.split(":")[1]);
-
-            try (Socket socket = new Socket(host, port);
+        for (HostPojo host : hosts) {
+            try (Socket socket = new Socket(host.getHost(), host.getPort());
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true)) {
                 out.println("HBEAT");
 
-                Logger.info("Heartbeat enviado para " + host + ":" + port);
+                Logger.info("Heartbeat enviado para " + host + ":" + host.getPort());
+
+                host.setAlive(true);
             } catch (IOException e) {
-                Logger.error("Falha ao enviar heartbeat para " + host + ":" + port + " - " + e.getMessage());
+                host.setAlive(false);
+                Logger.error("Falha ao enviar heartbeat para " + host + ":" + host.getPort() + " - " + e.getMessage());
             }
         }
     }

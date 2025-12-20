@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.thyagoronald.configs.DbConfig;
-import com.thyagoronald.dto.CreateUserDTO;
+import com.thyagoronald.dtos.CreateUserDTO;
 import com.thyagoronald.models.UserModel;
 
 import lombok.AllArgsConstructor;

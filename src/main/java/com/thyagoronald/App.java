@@ -1,7 +1,6 @@
 package com.thyagoronald;
 
-import java.util.Arrays;
-
+import com.thyagoronald.factories.HostFactory;
 import com.thyagoronald.services.HeartbeatService;
 import com.thyagoronald.services.SocketService;
 import com.thyagoronald.utils.Logger;
@@ -13,16 +12,20 @@ public class App {
             String[] hosts = args[1].split("#");
 
             HeartbeatService heartbeatService = HeartbeatService.builder()
-                    .hosts(Arrays.asList(hosts))
-                    .intervalSeconds(5)
-                    .build();
+                .hosts(HostFactory.createHostPojos(hosts))
+                .intervalSeconds(5)
+                .build();
             SocketService socketService = new SocketService(port);
 
             new Thread(heartbeatService::start).start();
 
             socketService.startServer();
-        } catch (Exception ex) {
-            Logger.error(ex.getMessage());
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException ex) {
+            Logger.error("Invalid arguments: " + ex.getMessage());
+        } catch (IllegalArgumentException ex) {
+            Logger.error("Illegal argument: " + ex.getMessage());
+        } catch (IllegalStateException ex) {
+            Logger.error("Illegal state: " + ex.getMessage());
         }
     }
 }
