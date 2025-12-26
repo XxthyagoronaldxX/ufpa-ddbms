@@ -25,8 +25,8 @@ public class CommunicationServiceImpl implements CommunicationService {
 
         try {
             this.hosts.addAll(HostsFileReader.readHosts("hosts.txt").stream()
-                    .map(host -> new HostPojo(host, port, false))
-                    .toList());
+                .map(host -> new HostPojo(host, port, false))
+                .toList());
         } catch (IOException e) {
             Logger.error("Erro ao ler o arquivo de hosts: " + e.getMessage());
         }
@@ -35,6 +35,9 @@ public class CommunicationServiceImpl implements CommunicationService {
     @Override
     public void sendHeartbeat() {
         for (HostPojo host : hosts) {
+            if (host.isLocal())
+                continue;
+
             try (Socket socket = new Socket(host.getHost(), host.getPort());
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
@@ -76,22 +79,26 @@ public class CommunicationServiceImpl implements CommunicationService {
 
     @Override
     public void sendReplication(String data) {
-        for (HostPojo host : hosts) {
-            try (Socket socket = new Socket(host.getHost(), host.getPort());
-                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-                out.println(ProtocolConst.REPLICATE_PREFIX + data);
+        try {
+            for (HostPojo host : hosts) {
+                if (host.isLocal())
+                    continue;
 
-                String response = in.readLine();
+                try (Socket socket = new Socket(host.getHost(), host.getPort());
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+                    out.println(ProtocolConst.REPLICATE_PREFIX + data);
 
-                // Criar um schedule caso o host esteja offline para tentar reenviar depois
-                // Lembrar de criar uma fila de mensagens pendentes para cada host
+                    String response = in.readLine();
 
-                Logger.info("sendReplication response: " + response);
-            } catch (IOException e) {
-                Logger.error("Falha ao enviar replicação para " + host.getHost() + ":" + host.getPort() + " - "
-                        + e.getMessage());
+                    // Criar um schedule caso o host esteja offline para tentar reenviar depois
+                    // Lembrar de criar uma fila de mensagens pendentes para cada host
+
+                    Logger.info("sendReplication response: " + response);
+                }
             }
+        } catch (IOException ex) {
+            Logger.error("Erro de I/O ao enviar replicação: " + ex.getMessage());
         }
     }
 }

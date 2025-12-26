@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class FindAllUser {
+public class AddUserRow {
     public static void main(String[] args) {
         String host = "localhost";
         int port = 8080;
@@ -15,11 +15,7 @@ public class FindAllUser {
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
 
-            out.println("QUERY " + "CREATE TABLE IF NOT EXISTS users (" +
-                    "id INT AUTO_INCREMENT PRIMARY KEY," +
-                    "name VARCHAR(100) NOT NULL," +
-                    "email VARCHAR(100) NOT NULL" +
-                    ")");
+            out.println("QUERY INSERT INTO users (name, email) VALUES ('John Doe', 'john.doe@example.com')");
             String resposta = in.readLine();
 
             System.out.println("Resposta do servidor: " + resposta);
