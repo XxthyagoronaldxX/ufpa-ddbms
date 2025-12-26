@@ -5,26 +5,30 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.thyagoronald.pojos.HostPojo;
 import com.thyagoronald.services.CommunicationService;
+import com.thyagoronald.services.DbService;
 import com.thyagoronald.utils.HostsFileReader;
 import com.thyagoronald.utils.Logger;
 import com.thyagoronald.utils.ProtocolConst;
 
 public class CommunicationServiceImpl implements CommunicationService {
-    private List<HostPojo> hosts = new ArrayList<>();
+    private final DbService dbService;
+    private final List<HostPojo> hosts = new ArrayList<>();
 
-    public CommunicationServiceImpl(int port) {
+    public CommunicationServiceImpl(DbService dbService, int port) {
+        this.dbService = dbService;
+
         try {
-            this.hosts = HostsFileReader.readHosts("hosts.txt").stream()
+            this.hosts.addAll(HostsFileReader.readHosts("hosts.txt").stream()
                     .map(host -> new HostPojo(host, port, false))
-                    .toList();
+                    .toList());
         } catch (IOException e) {
             Logger.error("Erro ao ler o arquivo de hosts: " + e.getMessage());
-            this.hosts = new ArrayList<>();
         }
     }
 
@@ -49,6 +53,24 @@ public class CommunicationServiceImpl implements CommunicationService {
                 Logger.error("Falha ao enviar heartbeat para " + host.getHost() + ":" + host.getPort() + " - "
                         + e.getMessage());
             }
+        }
+    }
+
+    @Override
+    public void handleHeartbeat(PrintWriter out) {
+        out.println(ProtocolConst.HEARTBEAT_RESPONSE);
+    }
+
+    @Override
+    public void handleReplicate(String input, PrintWriter out) {
+        String query = input.replaceFirst("^REPLICATE\\s+", "").trim();
+
+        try {
+            dbService.execute(query);
+            out.println(ProtocolConst.REPLICATE_SUCCESS);
+        } catch (SQLException e) {
+            Logger.error("Erro ao executar REPLICATION: " + e.getMessage());
+            out.println(ProtocolConst.ERROR_RESPONSE);
         }
     }
 
