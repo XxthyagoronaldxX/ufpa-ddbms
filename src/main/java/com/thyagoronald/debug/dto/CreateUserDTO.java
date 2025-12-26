@@ -1,4 +1,4 @@
-package com.thyagoronald.dto;
+package com.thyagoronald.debug.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

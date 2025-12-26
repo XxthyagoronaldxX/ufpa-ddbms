@@ -1,4 +1,4 @@
-package com.thyagoronald.models;
+package com.thyagoronald.debug.models;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

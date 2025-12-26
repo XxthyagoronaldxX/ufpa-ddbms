@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class HostsFileReader {
+    private HostsFileReader() {
+    }
+
     public static List<String> readHosts(String filePath) throws IOException {
         return Files.lines(Paths.get(filePath))
                 .map(String::trim)

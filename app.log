@@ -110,3 +110,6 @@
 [2025-12-18 15:51:02] [ERROR] Index 0 out of bounds for length 0
 [2025-12-18 15:51:09] [INFO] Iniciando servidor socket na porta 880
 [2025-12-18 15:51:09] [INFO] Heartbeat iniciado para hosts: [172.20.0.2, 172.20.0.3, 172.20.0.4]
+[2025-12-20 13:59:14] [ERROR] Falha ao conectar ao banco de dados: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
