@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class GetIt {
-
     private static GetIt instance;
     private final Map<Class<?>, Object> instances;
 

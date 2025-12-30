@@ -6,45 +6,39 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
+import com.thyagoronald.AppContext;
 import com.thyagoronald.pojos.HostPojo;
 import com.thyagoronald.services.CommunicationService;
 import com.thyagoronald.services.DbService;
-import com.thyagoronald.utils.HostsFileReader;
+import com.thyagoronald.utils.GetIt;
 import com.thyagoronald.utils.Logger;
 import com.thyagoronald.utils.ProtocolConst;
 
 public class CommunicationServiceImpl implements CommunicationService {
     private final DbService dbService;
-    private final List<HostPojo> hosts = new ArrayList<>();
 
-    public CommunicationServiceImpl(DbService dbService, int port) {
+    public CommunicationServiceImpl(DbService dbService) {
         this.dbService = dbService;
-
-        try {
-            this.hosts.addAll(HostsFileReader.readHosts("hosts.txt").stream()
-                .map(host -> new HostPojo(host, port, false))
-                .toList());
-        } catch (IOException e) {
-            Logger.error("Erro ao ler o arquivo de hosts: " + e.getMessage());
-        }
     }
 
     @Override
     public void sendHeartbeat() {
+        AppContext appContext = GetIt.getInstance().find(AppContext.class);
+        List<HostPojo> hosts = appContext.getHosts();
+
         for (HostPojo host : hosts) {
-            if (host.isLocal())
+            if (host.isLocal() || !host.isAlive())
                 continue;
 
             try (Socket socket = new Socket(host.getHost(), host.getPort());
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-                out.println(ProtocolConst.HEARTBEAT_REQUEST);
+                out.println(ProtocolConst.HEARTBEAT_PREFIX);
 
                 String response = in.readLine();
-                if (!ProtocolConst.HEARTBEAT_RESPONSE.equals(response))
+                if (!ProtocolConst.HEARTBEAT_SUCCESS.equals(response))
                     throw new IOException("Resposta inesperada: " + response);
 
                 host.setAlive(true);
@@ -61,7 +55,7 @@ public class CommunicationServiceImpl implements CommunicationService {
 
     @Override
     public void handleHeartbeat(PrintWriter out) {
-        out.println(ProtocolConst.HEARTBEAT_RESPONSE);
+        out.println(ProtocolConst.HEARTBEAT_SUCCESS);
     }
 
     @Override
@@ -79,9 +73,12 @@ public class CommunicationServiceImpl implements CommunicationService {
 
     @Override
     public void sendReplication(String data) {
+        AppContext appContext = GetIt.getInstance().find(AppContext.class);
+        List<HostPojo> hosts = appContext.getHosts();
+
         try {
             for (HostPojo host : hosts) {
-                if (host.isLocal())
+                if (host.isLocal() || !host.isAlive())
                     continue;
 
                 try (Socket socket = new Socket(host.getHost(), host.getPort());
@@ -100,5 +97,35 @@ public class CommunicationServiceImpl implements CommunicationService {
         } catch (IOException ex) {
             Logger.error("Erro de I/O ao enviar replicação: " + ex.getMessage());
         }
+    }
+
+    @Override
+    public String sendLoadBalancer(String data) {
+        AppContext appContext = GetIt.getInstance().find(AppContext.class);
+        List<HostPojo> hosts = appContext.getHosts();
+
+        try {
+            for (HostPojo host : hosts) {
+                if (host.isLocal() || !host.isAlive())
+                    continue;
+
+                try (Socket socket = new Socket(host.getHost(), host.getPort());
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
+                    out.println(ProtocolConst.LOADBALANCER_PREFIX + data);
+
+                    String response = in.readLine();
+
+                    Logger.info("sendLoadBalancer response: " + response);
+
+                    return response;
+                }
+            }
+        } catch (IOException ex) {
+            Logger.error("Erro de I/O ao enviar load balancer: " + ex.getMessage());
+            return "Erro de I/O ao enviar load balancer: " + ex.getMessage();
+        }
+
+        return null;
     }
 }

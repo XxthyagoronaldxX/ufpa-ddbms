@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import com.thyagoronald.contracts.MiddlewareManager;
 import com.thyagoronald.services.ApiService;
 import com.thyagoronald.services.CommunicationService;
 import com.thyagoronald.services.SocketService;
@@ -15,12 +16,15 @@ import com.thyagoronald.utils.ProtocolConst;
 
 public class SocketServiceImpl implements SocketService {
     private final CommunicationService communicationService;
+    private final MiddlewareManager middlewareManager;
     private final ApiService apiService;
     private final int port;
     private volatile boolean running = true;
 
-    public SocketServiceImpl(CommunicationService communicationService, ApiService apiService, int port) {
+    public SocketServiceImpl(CommunicationService communicationService, MiddlewareManager middlewareManager,
+            ApiService apiService, int port) {
         this.communicationService = communicationService;
+        this.middlewareManager = middlewareManager;
         this.apiService = apiService;
         this.port = port;
     }
@@ -32,7 +36,7 @@ public class SocketServiceImpl implements SocketService {
             while (running) {
                 Socket clientSocket = serverSocket.accept();
                 Logger.info("Cliente conectado: " + clientSocket.getInetAddress());
-                new Thread(() -> handleClient(clientSocket)).start();
+                new Thread(() -> middlewareManager.run(clientSocket, null)).start();
             }
         } catch (IOException e) {
             Logger.error("Erro no servidor: " + e.getMessage());
@@ -45,7 +49,7 @@ public class SocketServiceImpl implements SocketService {
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
-                if (inputLine.contains(ProtocolConst.HEARTBEAT_REQUEST)) {
+                if (inputLine.contains(ProtocolConst.HEARTBEAT_PREFIX)) {
                     communicationService.handleHeartbeat(out);
                 } else if (inputLine.contains(ProtocolConst.REPLICATE_PREFIX)) {
                     communicationService.handleReplicate(inputLine, out);

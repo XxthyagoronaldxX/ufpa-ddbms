@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class HostPojo {
     private String host;
     private int port;
+    private int connections;
     private boolean isAlive;
     private boolean isLocal;
 
@@ -24,12 +25,11 @@ public class HostPojo {
         this.host = host;
         this.port = port;
         this.isAlive = isAlive;
+        this.connections = 0;
 
         try {
             InetAddress inetAddress = InetAddress.getLocalHost();
             String hostAddress = inetAddress.getHostAddress();
-            System.out.println(hostAddress);
-            System.out.println(host);
             this.isLocal = hostAddress.equals(host);
         } catch (UnknownHostException ex) {
             Logger.error("Erro ao obter o endereço do host local: " + ex.getMessage());

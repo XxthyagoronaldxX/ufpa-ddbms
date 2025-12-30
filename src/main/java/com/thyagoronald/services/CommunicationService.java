@@ -7,6 +7,8 @@ public interface CommunicationService {
 
     void sendReplication(String query);
 
+    String sendLoadBalancer(String data);
+
     void handleHeartbeat(PrintWriter out);
 
     void handleReplicate(String input, PrintWriter out);
