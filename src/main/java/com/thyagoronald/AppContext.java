@@ -5,16 +5,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.stereotype.Component;
+
 import com.thyagoronald.pojos.HostPojo;
 import com.thyagoronald.utils.HostsFileReader;
 import com.thyagoronald.utils.Logger;
 
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
+@Component
 public class AppContext {
+    private static AppContext instance;
     private final List<HostPojo> hosts = new ArrayList<>();
     private final AtomicInteger connections = new AtomicInteger(0);
+
+    @PostConstruct
+    public void init() {
+        instance = this;
+        instance.initHosts(8081);
+    }
+
+    public static AppContext getInstance() {
+        return instance;
+    }
 
     public void initHosts(int port) {
         try {

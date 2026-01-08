@@ -8,7 +8,10 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.thyagoronald.AppContext;
+import com.thyagoronald.middleware.LoadBalancingFilter;
 import com.thyagoronald.pojos.HostPojo;
 import com.thyagoronald.services.CommunicationService;
 import com.thyagoronald.services.DbService;
@@ -16,26 +19,23 @@ import com.thyagoronald.utils.GetIt;
 import com.thyagoronald.utils.Logger;
 import com.thyagoronald.utils.ProtocolConst;
 
+import lombok.AllArgsConstructor;
+
+@Component
+@AllArgsConstructor
 public class CommunicationServiceImpl implements CommunicationService {
     private final DbService dbService;
-
-    public CommunicationServiceImpl(DbService dbService) {
-        this.dbService = dbService;
-    }
+    private final AppContext appContext;
 
     @Override
     public void sendHeartbeat() {
-        AppContext appContext = GetIt.getInstance().find(AppContext.class);
         List<HostPojo> hosts = appContext.getHosts();
 
         for (HostPojo host : hosts) {
-            if (host.isLocal() || !host.isAlive())
-                continue;
-
             try (Socket socket = new Socket(host.getHost(), host.getPort());
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))) {
-                out.println(ProtocolConst.HEARTBEAT_PREFIX);
+                out.println(ProtocolConst.HEARTBEAT_PREFIX + LoadBalancingFilter.getCurrentRequestCount());
 
                 String response = in.readLine();
                 if (!ProtocolConst.HEARTBEAT_SUCCESS.equals(response))
@@ -43,7 +43,7 @@ public class CommunicationServiceImpl implements CommunicationService {
 
                 host.setAlive(true);
 
-                Logger.info("Heartbeat enviado para " + host.getHost() + ":" + host.getPort());
+                Logger.info("HEARTBEAT enviado para " + host.getHost() + ":" + host.getPort());
             } catch (IOException e) {
                 host.setAlive(false);
 
@@ -55,6 +55,8 @@ public class CommunicationServiceImpl implements CommunicationService {
 
     @Override
     public void handleHeartbeat(PrintWriter out) {
+        Logger.info("Handle heartbeat recebido.");
+
         out.println(ProtocolConst.HEARTBEAT_SUCCESS);
     }
 
