@@ -10,7 +10,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.thyagoronald.AppContext;
 import com.thyagoronald.pojos.HostPojo;
-import com.thyagoronald.utils.GetIt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,6 +20,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class LoadBalancingFilter extends OncePerRequestFilter {
     private static final int MAX_REQUESTS = 10;
     private static final AtomicInteger counter = new AtomicInteger(0);
+    private final AppContext appContext;
+
+    public LoadBalancingFilter(AppContext appContext) {
+        this.appContext = appContext;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -29,7 +33,6 @@ public class LoadBalancingFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            AppContext appContext = GetIt.getInstance().find(AppContext.class);
             String loadBalanced = request.getParameter("loadBalanced");
             HostPojo hostPojo = appContext.getLeastLoadedHost();
 

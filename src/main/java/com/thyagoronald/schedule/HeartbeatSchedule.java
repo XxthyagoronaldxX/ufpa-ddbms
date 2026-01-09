@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 public class HeartbeatSchedule {
     private final CommunicationService communicationService;
 
-    @Scheduled(fixedRate = 5000)
+    @Scheduled(fixedDelay = 10000)
     public void initHeartbeat() {
         Logger.info("Iniciando envio de heartbeat...");
         communicationService.sendHeartbeat();

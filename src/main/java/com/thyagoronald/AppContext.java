@@ -12,28 +12,20 @@ import com.thyagoronald.utils.HostsFileReader;
 import com.thyagoronald.utils.Logger;
 
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 @Component
 public class AppContext {
-    private static AppContext instance;
-    private final List<HostPojo> hosts = new ArrayList<>();
-    private final AtomicInteger connections = new AtomicInteger(0);
+    private static final List<HostPojo> hosts = new ArrayList<>();
+    private static final AtomicInteger connections = new AtomicInteger(0);
 
     @PostConstruct
     public void init() {
-        instance = this;
-        instance.initHosts(8081);
-    }
-
-    public static AppContext getInstance() {
-        return instance;
+        initHosts(8081);
     }
 
     public void initHosts(int port) {
         try {
-            this.hosts.addAll(HostsFileReader.readHosts("hosts.txt").stream()
+            hosts.addAll(HostsFileReader.readHosts("hosts.txt").stream()
                     .map(host -> new HostPojo(host, port, false))
                     .toList());
         } catch (IOException e) {

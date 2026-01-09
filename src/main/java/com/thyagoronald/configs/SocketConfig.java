@@ -47,15 +47,16 @@ public class SocketConfig {
         try (
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                if (inputLine.contains(ProtocolConst.HEARTBEAT_PREFIX)) {
-                    Logger.info(inputLine);
+            String method = in.readLine();
 
-                    communicationService.handleHeartbeat(out);
-                } else if (inputLine.contains(ProtocolConst.REPLICATE_PREFIX)) {
-                    communicationService.handleReplicate(inputLine, out);
-                }
+            if (method.contains(ProtocolConst.HEARTBEAT_METHOD)) {
+                Logger.info("[RECV] Hearbeat");
+
+                communicationService.handleHeartbeat(in, out);
+            } else if (method.contains(ProtocolConst.REPLICATE_METHOD)) {
+                Logger.info("[RECV] Replicate");
+
+                communicationService.handleReplicate(in, out);
             }
         } catch (IOException e) {
             Logger.error("Erro ao tratar cliente: " + e.getMessage());

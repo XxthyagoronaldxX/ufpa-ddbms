@@ -1,5 +1,6 @@
 package com.thyagoronald.services;
 
+import java.io.BufferedReader;
 import java.io.PrintWriter;
 
 public interface CommunicationService {
@@ -7,9 +8,7 @@ public interface CommunicationService {
 
     void sendReplication(String query);
 
-    String sendLoadBalancer(String data);
+    void handleHeartbeat(BufferedReader in, PrintWriter out);
 
-    void handleHeartbeat(PrintWriter out);
-
-    void handleReplicate(String input, PrintWriter out);
+    void handleReplicate(BufferedReader in, PrintWriter out);
 }
