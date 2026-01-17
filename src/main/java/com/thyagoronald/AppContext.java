@@ -9,10 +9,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.stereotype.Component;
 
-import com.thyagoronald.pojos.HeartbeatPojo;
-import com.thyagoronald.pojos.HostPojo;
-import com.thyagoronald.utils.HostsFileReader;
-import com.thyagoronald.utils.Logger;
+import com.thyagoronald.domain.pojos.HeartbeatPojo;
+import com.thyagoronald.domain.pojos.HistoryPojo;
+import com.thyagoronald.domain.pojos.HostPojo;
+import com.thyagoronald.domain.utils.HostsFileReader;
+import com.thyagoronald.domain.utils.Logger;
 
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
@@ -99,6 +100,15 @@ public class AppContext {
         }
     }
 
+    public void addHistory(HistoryPojo history) {
+        for (HostPojo host : hosts) {
+            if (host.getNodeId() == history.getNodeId()) {
+                host.getHistory().add(history.getQuery());
+                return;
+            }
+        }
+    }
+
     public int getTotalConnections() {
         return connections.get();
     }
@@ -125,6 +135,10 @@ public class AppContext {
 
     public List<HostPojo> getHostAlives() {
         return hosts.stream().filter(HostPojo::isAlive).toList();
+    }
+
+    public List<HostPojo> getHostNotAlives() {
+        return hosts.stream().filter(h -> !h.isAlive()).toList();
     }
 
     public boolean isLeader() {
