@@ -1,53 +1,41 @@
 package com.thyagoronald.controllers;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thyagoronald.configs.DbConfig;
-import com.thyagoronald.errors.ReplicateHostException;
 import com.thyagoronald.pojos.QueryPojo;
-import com.thyagoronald.services.CommunicationService;
-import com.thyagoronald.utils.DbUtil;
+import com.thyagoronald.pojos.QueryResponsePojo;
+import com.thyagoronald.services.ApiService;
 
 import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
+@RequestMapping("api")
 public class ApiController {
-    private final CommunicationService communicationService;
+    private final ApiService apiService;
 
-    @PostMapping("query")
-    public ResponseEntity<Object> doQuery(@RequestBody QueryPojo dto) {
-        try {
-            String query = dto.getQuery();
+    @GetMapping("read")
+    public ResponseEntity<QueryResponsePojo> doQueryReadBalanced(@RequestParam("query") String query) {
+        QueryPojo balancedDto = new QueryPojo();
 
-            try (Connection connection = DbConfig.getConnection()) {
-                connection.setAutoCommit(false);
-                try (PreparedStatement ps = connection.prepareStatement(query)) {
-                    if (query.startsWith("SELECT")) {
-                        ResultSet rs = ps.executeQuery();
+        balancedDto.setQuery(query);
 
-                        return ResponseEntity.ok(DbUtil.findDynamicData(rs));
-                    } else {
-                        ps.executeUpdate();
-                        communicationService.sendReplication(dto.getQuery());
-                        connection.commit();
-                        return ResponseEntity.ok("SQL EXECUTED SUCCESSFULLY");
-                    }
-                } catch (SQLException | ReplicateHostException ex) {
-                    connection.rollback();
-                    return ResponseEntity.status(500).body("SQL EXECUTION ERROR: " + ex.getMessage());
-                }
-            }
-        } catch (SQLException ex) {
-            return ResponseEntity.status(500).body("Error executing query");
-        }
+        return apiService.doQueryRead(balancedDto);
+    }
+
+    @PostMapping("read")
+    public ResponseEntity<QueryResponsePojo> doQueryRead(@RequestBody QueryPojo dto) {
+        return apiService.doQueryRead(dto);
+    }
+
+    @PostMapping("write")
+    public ResponseEntity<QueryResponsePojo> doQueryWrite(@RequestBody QueryPojo dto) {
+        return apiService.doQueryWrite(dto);
     }
 }

@@ -1,14 +1,12 @@
 package com.thyagoronald.services;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
+import com.thyagoronald.pojos.RequestPojo;
+import com.thyagoronald.pojos.ResponsePojo;
 
 public interface CommunicationService {
     void sendHeartbeat();
 
-    void sendReplication(String query);
+    void handleHeartbeat(RequestPojo request, ResponsePojo response);
 
-    void handleHeartbeat(BufferedReader in, PrintWriter out);
-
-    void handleReplicate(BufferedReader in, PrintWriter out);
+    void handleReplicate(RequestPojo request, ResponsePojo response);
 }

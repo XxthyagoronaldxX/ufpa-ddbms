@@ -14,6 +14,7 @@ public class ProtocolConst {
     public static final String CRC_ATTR = "CRC ";
     public static final String REPLICATE_ID_ATTR = "REPLICATE_ID ";
     public static final String CONTENT_ATTR = "CONTENT ";
+    public static final String NODE_ID_ATTR = "NODE_ID ";
 
     public static final String HEARTBEAT_SUCCESS = "ALIVE";
 

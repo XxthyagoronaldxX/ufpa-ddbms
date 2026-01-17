@@ -1,15 +1,20 @@
 package com.thyagoronald.middleware;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thyagoronald.AppContext;
 import com.thyagoronald.pojos.HostPojo;
+import com.thyagoronald.pojos.QueryPojo;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,8 +22,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Component
+@Order(2)
 public class LoadBalancingFilter extends OncePerRequestFilter {
-    private static final int MAX_REQUESTS = 10;
+    private static final boolean ISDOCKER = true;
     private static final AtomicInteger counter = new AtomicInteger(0);
     private final AppContext appContext;
 
@@ -27,21 +33,34 @@ public class LoadBalancingFilter extends OncePerRequestFilter {
     }
 
     @Override
+    protected boolean shouldNotFilter(@NonNull HttpServletRequest request) {
+        String path = request.getRequestURI();
+
+        return path.startsWith("/api/write");
+    }
+
+    @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
             @NonNull HttpServletResponse response,
-            @NonNull FilterChain filterChain)
-            throws ServletException, IOException {
+            @NonNull FilterChain filterChain) throws ServletException, IOException {
         try {
             String loadBalanced = request.getParameter("loadBalanced");
             HostPojo hostPojo = appContext.getLeastLoadedHost();
+            InetAddress inetAddress = InetAddress.getLocalHost();
+            String hostAddress = inetAddress.getHostAddress();
 
-            if ((Objects.isNull(loadBalanced) || !"true".equals(loadBalanced))
-                    && counter.get() > MAX_REQUESTS
-                    && Objects.nonNull(hostPojo)
-                    && hostPojo.isAlive()) {
-                String redirectUrl = "http://" + hostPojo.getHost() + ":" + hostPojo.getPort()
-                        + request.getRequestURI() + "?loadBalanced=true";
+            if (!hostPojo.getHost().equals(hostAddress) && Objects.isNull(loadBalanced)) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                QueryPojo queryPojo = objectMapper.readValue(request.getInputStream(), QueryPojo.class);
+                String host = ISDOCKER ? "localhost" : hostPojo.getHost();
+                String redirectUrl = UriComponentsBuilder
+                    .fromHttpUrl("http://" + host + ":" + hostPojo.getApiPort())
+                    .path("/api/read")
+                    .queryParam("loadBalanced", true)
+                    .queryParam("query", queryPojo.getQuery())
+                    .build()
+                    .toUriString();
 
                 response.sendRedirect(redirectUrl);
 

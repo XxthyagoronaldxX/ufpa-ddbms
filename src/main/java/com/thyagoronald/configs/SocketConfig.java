@@ -1,14 +1,13 @@
 package com.thyagoronald.configs;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.springframework.context.annotation.Configuration;
 
+import com.thyagoronald.pojos.RequestPojo;
+import com.thyagoronald.pojos.ResponsePojo;
 import com.thyagoronald.services.CommunicationService;
 import com.thyagoronald.utils.Logger;
 import com.thyagoronald.utils.ProtocolConst;
@@ -18,7 +17,7 @@ import jakarta.annotation.PostConstruct;
 @Configuration
 public class SocketConfig {
     private final CommunicationService communicationService;
-    private static final int PORT = 8081;
+    private static final int PORT = 8001;
     private volatile boolean running = true;
 
     public SocketConfig(CommunicationService communicationService) {
@@ -44,19 +43,12 @@ public class SocketConfig {
     }
 
     private void handleClient(Socket clientSocket) {
-        try (
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) {
-            String method = in.readLine();
-
-            if (method.contains(ProtocolConst.HEARTBEAT_METHOD)) {
-                Logger.info("[RECV] Hearbeat");
-
-                communicationService.handleHeartbeat(in, out);
-            } else if (method.contains(ProtocolConst.REPLICATE_METHOD)) {
-                Logger.info("[RECV] Replicate");
-
-                communicationService.handleReplicate(in, out);
+        try (RequestPojo request = new RequestPojo(clientSocket);
+                ResponsePojo response = new ResponsePojo(clientSocket)) {
+            if (request.getMethod().equals(ProtocolConst.HEARTBEAT_METHOD)) {
+                communicationService.handleHeartbeat(request, response);
+            } else if (request.getMethod().equals(ProtocolConst.REPLICATE_METHOD)) {
+                communicationService.handleReplicate(request, response);
             }
         } catch (IOException e) {
             Logger.error("Erro ao tratar cliente: " + e.getMessage());
@@ -64,7 +56,7 @@ public class SocketConfig {
             try {
                 clientSocket.close();
             } catch (IOException e) {
-                Logger.error("Erro ao fechar conexão com cliente: " + e.getMessage());
+                Logger.error("Não foi possível fechar conexão com cliente: " + e.getMessage());
             }
         }
     }

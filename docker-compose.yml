@@ -7,6 +7,7 @@ services:
             MYSQL_DB_PORT: 3306
             MYSQL_DB_USER: root
             MYSQL_DB_PASSWORD: root
+            NODE_ID: 1
         depends_on:
             mysql_01:
                 condition: service_healthy
@@ -23,9 +24,12 @@ services:
             MYSQL_DB_PORT: 3306
             MYSQL_DB_USER: root
             MYSQL_DB_PASSWORD: root
+            NODE_ID: 2
         depends_on:
             mysql_02:
                 condition: service_healthy
+        ports:
+            - "8081:8080"
         networks:
             custom_net:
                 ipv4_address: 172.25.0.3
@@ -37,9 +41,12 @@ services:
             MYSQL_DB_PORT: 3306
             MYSQL_DB_USER: root
             MYSQL_DB_PASSWORD: root
+            NODE_ID: 3
         depends_on:
             mysql_03:
                 condition: service_healthy
+        ports:
+            - "8082:8080"
         networks:
             custom_net:
                 ipv4_address: 172.25.0.4
