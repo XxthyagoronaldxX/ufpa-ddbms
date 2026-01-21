@@ -6,7 +6,6 @@ import java.net.Socket;
 
 import org.springframework.context.annotation.Configuration;
 
-import com.mysql.cj.protocol.Protocol;
 import com.thyagoronald.domain.services.CommunicationService;
 import com.thyagoronald.domain.pojos.RequestPojo;
 import com.thyagoronald.domain.pojos.ResponsePojo;
