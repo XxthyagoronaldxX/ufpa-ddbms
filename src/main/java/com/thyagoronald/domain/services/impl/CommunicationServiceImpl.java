@@ -16,8 +16,8 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thyagoronald.AppContext;
-import com.thyagoronald.domain.configs.DbConfig;
 import com.thyagoronald.api.middleware.LoadBalancingFilter;
+import com.thyagoronald.domain.configs.DbConfig;
 import com.thyagoronald.domain.pojos.HeartbeatPojo;
 import com.thyagoronald.domain.pojos.HistoryPojo;
 import com.thyagoronald.domain.pojos.HostPojo;
@@ -82,7 +82,6 @@ public class CommunicationServiceImpl implements CommunicationService {
                 HeartbeatPojo heartbeatPojo = new ObjectMapper().readValue(request.getContent(), HeartbeatPojo.class);
 
                 appContext.updateCtxBy(heartbeatPojo, request.getHost());
-                appContext.refreshLeader();
                 if (appContext.isLeader()) {
                     for (HostPojo host : appContext.getHostAlives()) {
                         if (!host.getHistory().isEmpty() && sendRecover(host)) {
@@ -91,6 +90,7 @@ public class CommunicationServiceImpl implements CommunicationService {
                         }
                     }
                 }
+                appContext.refreshLeader();
 
                 response.sendLine(ProtocolConst.HEARTBEAT_SUCCESS);
             } else {
