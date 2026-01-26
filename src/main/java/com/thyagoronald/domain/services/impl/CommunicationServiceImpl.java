@@ -85,7 +85,6 @@ public class CommunicationServiceImpl implements CommunicationService {
                 if (appContext.isLeader()) {
                     for (HostPojo host : appContext.getHostAlives()) {
                         if (!host.getHistory().isEmpty() && sendRecover(host)) {
-                            Logger.info("HISTORY RESET ENTERED");
                             sendHistoryReset(host.getNodeId());
                         }
                     }
@@ -94,7 +93,7 @@ public class CommunicationServiceImpl implements CommunicationService {
 
                 response.sendLine(ProtocolConst.HEARTBEAT_SUCCESS);
             } else {
-                Logger.error("INVALID CHECKSUM DETECTED");
+                Logger.error("HEARTBEAT EXCEPTION: INVALID CHECKSUM DETECTED");
                 response.sendLine(ProtocolConst.ERROR_CRC_RESPONSE);
             }
         } catch (NumberFormatException | IOException ex) {

@@ -61,6 +61,8 @@ public class LoadBalancingFilter extends OncePerRequestFilter {
                     .queryParam("query", queryPojo.getQuery())
                     .build()
                     .toUriString();
+                
+                hostPojo.incrementConnections();
 
                 response.sendRedirect(redirectUrl);
 

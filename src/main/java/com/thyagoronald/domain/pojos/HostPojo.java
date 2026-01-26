@@ -45,4 +45,8 @@ public class HostPojo {
             Logger.error("Erro ao obter o endereço do host local: " + ex.getMessage());
         }
     }
+
+    public void incrementConnections() {
+        this.connections++;
+    }
 }
