@@ -49,4 +49,10 @@ public class HostPojo {
     public void incrementConnections() {
         this.connections++;
     }
+
+    public void decrementConnections() {
+        if (this.connections > 0) {
+            this.connections--;
+        }
+    }
 }

@@ -4,7 +4,7 @@
 
 # TESTE 2: Usar Script para forçar o loadbalancing.
 
-- COMANDO: ab -n 50 -c 50 -p read-payload.json -T application/json http://localhost:8080/api/read
+- COMANDO: ab -n 50 -c 50 -p read-payload.json -T application/json http://localhost:8082/api/read
 - Validar se os nós estão recebendo requests de acordo com o algoritmo: O nó com menor quantidade de conexões recebe a request. 
 
 # TESTE 3: Testando eleição de coordenador. (Caso o atual seja desligado)
